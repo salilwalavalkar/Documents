@@ -1,0 +1,10 @@
+Methods - What to return [Null v/s Empty List]
+
+Collections.emptyList() [Immutable]
+The main difference is that Collections.emptyList() returns an immutable list, i.e., a list to which you cannot add or remove elements.
+In the rare cases in which you do want to modify the returned list, this would thus not be an option. I'd say that 
+returning an immutable list is perfectly fine (and even the preferred way) as long as the contract (documentation) 
+does not explicitly state differently.
+
+
+

@@ -1,0 +1,52 @@
+//Generics : Subtype / Supertype
+
+/************************************************************************************************************************************************
+PECS stands for producer-extends, consumer-super.
+For maximum flexibility, use wildcard types on input parameters that represent producers or consumers. 
+If an input parameter is both a producer and a consumer, then wildcard types will do you no good: you 
+need an exact type match, which is what you get without any wildcards. 
+**Do not use wildcard types as return types.** 
+Rather than providing additional flexibility for your users, it would force them to use wildcard types in client code.
+************************************************************************************************************************************************/
+
+// Stack Public API
+public class Stack<E> {
+	public Stack();
+	public void push(E e);
+	public E pop();
+	public boolean isEmpty();
+}
+
+// pushAll method without wildcard type  - deficient!
+public void pushAll(Iterable<E> src) {
+	for (E e : src)
+		push(e);
+}
+
+// popAll method without wildcard type - deficient!
+public void popAll(Collection<E> dst) {
+	while (!isEmpty())
+		dst.add(pop());
+}
+
+// Will fail for:
+Stack<Number> numberStack = new Stack<Number>();
+Iterable<Integer> integers = ... ;
+numberStack.pushAll(integers); // Since we declare number and using integers
+
+Stack<Number> numberStack = new Stack<Number>();
+Collection<Object> objects = ... ;
+numberStack.popAll(objects); // Since we declare number and using objects
+
+// Solution:
+// Wildcard type for parameter that serves as an E producer
+public void pushAll(Iterable<? extends E> src) {
+	for (E e : src)
+		push(e);
+}
+
+// Wildcard type for parameter that serves as an E consumer
+public void popAll(Collection<? super E> dst) {
+	while (!isEmpty())
+		dst.add(pop());
+}

@@ -1,0 +1,23 @@
+// Generic HashMap
+
+/************************************************************************************************************************************************
+One noteworthy feature of generic methods is that you needn’t specify the value of the type parameter explicitly as you must when invoking generic constructors.
+The compiler figures out the value of the type parameters by examining the types of the method arguments. This process is called type inference.
+You can exploit the type inference provided by generic method invocation to ease the process of creating parameterized type instances. To refresh your memory, the need to pass the values of type parameters explicitly when invoking generic constructors can be annoying. The type parameters appear redundantly on the left- and right-hand sides of variable declarations [This has been removed in Java 1.7]:
+************************************************************************************************************************************************/
+
+// Parameterized type instance creation with constructor
+Map<String, List<String>> anagrams = new HashMap<String, List<String>>();
+
+To eliminate this redundancy, write a generic static factory method corresponding to each constructor that you want to use. For example, here is a generic
+static factory method corresponding to the parameterless HashMap constructor:
+
+// Generic static factory method
+public static <K,V> HashMap<K,V> newHashMap() {
+	return new HashMap<K,V>();
+}
+
+// With this generic static factory method, you can replace the repetitious declaration above with this concise one:
+
+// Parameterized type instance creation with static factory
+Map<String, List<String>> anagrams = newHashMap();

@@ -1,0 +1,47 @@
+Abstract Factory design pattern
+
+Abstract Factory is a very central design pattern for Dependency Injection (DI). Any place where you need a run-time value to construct a particular dependency, Abstract Factory is the solution. Factory of factories. To keep things simple you can understand it like, you have a set of ‘related’ factory method design pattern. Then you will put all those set of simple factories inside a factory pattern. So in turn you need not be aware of the final concrete class that will be instantiated. You can program for the interface using the top factory. It provides an interface for creating families of dependent or related objects/classes without specifying their concrete classes or implementations.
+
+Example 
+
+Abstract Factory for creating factories of different bikes.
+public interface BikeFactory { 
+	Bike createBike();
+}
+
+Concrete Factory (YamahaFactory) implementing Abstract Factory.
+public class YamahaFactory implements BikeFactory{
+ @Override
+ public Bike createBike() {
+  return new FZ();
+ }
+}
+
+Concrete Factory (HondaFactory) implementing Abstract Factory.
+public class HondaFactory implements BikeFactory {
+ @Override
+ public Bike createBike() {
+  return new Hunk();
+ }
+}
+
+Abstract Product interface (Bike).
+public interface Bike {
+ public void drive();
+}
+
+Concrete Product (Hunk) for Abstract Product (Bike).
+public class Hunk implements Bike {
+ @Override
+ public void drive() {
+  System.out.println("Hunk is driving ...");
+ }
+}
+
+Concrete Product (FZ) for Abstract Product (Bike).
+public class FZ implements Bike {
+ @Override
+ public void drive() {
+  System.out.println("FZ is driving ... ");
+ }
+}

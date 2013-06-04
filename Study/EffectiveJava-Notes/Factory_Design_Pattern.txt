@@ -1,0 +1,44 @@
+Factory design pattern
+
+Provides a way to delegate the instantiation to sub-classes. 
+Factory pattern encapsulate object creation logic which makes it easy to change it later when you change how object gets created or you can even introduce new object with just change in one class. In GOF pattern list Factory pattern is listed as Creation design pattern. Factory should be an interface and clients first either creates factory or get factory which later used to create objects.
+
+A class implementing factory design pattern works as bridge between multiple classes. Consider an example of using multiple database servers like SQL Server and Oracle. If you are developing an application using SQL Server database as backend, but in future need to change backend database to oracle, you will need to modify all your code, if you haven’t written your code following factory design pattern.
+
+Example
+
+interface Currency { String getSymbol();}
+
+class Rupee implements Currency {
+	@Override
+	public String getSymbol() {
+		return "Rs";
+	}
+}
+
+class USDollar implements Currency {
+	@Override
+	public String getSymbol() {
+		return "USD";
+	}
+}
+
+// Factory Class
+class CurrencyFactory {
+	public static Currency createCurrency(String country) {
+		if (country.equalsIgnoreCase("India")) {
+			return new Rupee();
+		} else if (country.equalsIgnoreCase("US")) {
+			return new USDollar();
+		}
+		throw new IllegalArgumentException("No such currency");
+	}
+}
+
+// Factory client code
+public class FactoryPattern {
+	public static void main(String args[]) {
+		Currency rupee = CurrencyFactory.createCurrency("India");
+		System.out.println(rupee.getSymbol());
+	}
+}

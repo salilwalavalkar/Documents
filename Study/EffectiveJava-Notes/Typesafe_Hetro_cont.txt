@@ -1,0 +1,45 @@
+// Typesafe heterogeneous containers
+
+/************************************************************************************************************************************************
+In Set and Map, and single-element containers, it is the container that is parameterized. Sometimes, however, 
+you need more flexibility. For example, a database row can have arbitrarily many columns, and it would be nice 
+to be able to access all of them in a typesafe manner. Luckily, there is an easy way to achieve this effect. 
+The idea is to parameterize the key instead of the container. Then present the parameterized key to the container 
+to insert or retrieve a value. The generic type system is used to guarantee that the type of the value agrees 
+with its key
+
+Note: The type of a class literal is no longer simply Class, but Class<T>. For example, String.class is of type 
+Class<String>, and Integer.class is of type Class<Integer>. When a class literal is passed among methods to 
+communicate both compile-time and runtime type information, it is called a "type token"
+
+************************************************************************************************************************************************/
+
+// Typesafe heterogeneous container pattern - implementation
+public class Favorites {
+	
+	private Map<Class<?>, Object> favorites = new HashMap<Class<?>, Object>();
+	
+	public <T> void putFavorite(Class<T> type, T instance) {
+		if (type == null)
+			throw new NullPointerException("Type is null");
+		favorites.put(type, instance);
+	}
+	
+	public <T> T getFavorite(Class<T> type) {
+		return type.cast(favorites.get(type));
+	}
+}
+
+// Typesafe heterogeneous container pattern - client
+public static void main(String[] args) {
+	Favorites f = new Favorites();
+	f.putFavorite(String.class, "Java");
+	f.putFavorite(Integer.class, 0xcafebabe);
+	f.putFavorite(Class.class, Favorites.class);
+	String favoriteString = f.getFavorite(String.class);
+	int favoriteInteger = f.getFavorite(Integer.class);
+	Class<?> favoriteClass = f.getFavorite(Class.class);
+	System.out.printf("%s %x %s%n", favoriteString,
+	favoriteInteger, favoriteClass.getName());
+	// Output : Java cafebabe Favorites
+}	

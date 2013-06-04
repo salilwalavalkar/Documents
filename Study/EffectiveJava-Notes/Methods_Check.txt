@@ -1,0 +1,25 @@
+Methods - Best Practices
+
+public class CollectionClassifier {
+	public static String classify(Set<?> s) {
+		return "Set";
+	}
+
+	public static String classify(List<?> lst) {
+		return "List";
+	}
+	
+	public static String classify(Collection<?> c) {
+		return "Unknown Collection";
+	}
+	
+	public static void main(String[] args) {
+		Collection<?>[] collections = {new HashSet<String>(),new ArrayList<BigInteger>(),new HashMap<String, String>().values()};
+		for (Collection<?> c : collections)
+			System.out.println(classify(c));
+	}
+}
+
+It prints "Unknown Collection" three times. Why does this happen? Because the classify method is overloaded, 
+and the choice of which overloading to invoke is made at compile time. The behavior of this program is 
+counterintuitive because selection among overloaded methods is static, while selection among overridden methods is dynamic.
